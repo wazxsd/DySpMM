@@ -87,7 +87,7 @@ class DySpMM(object):
                     readB_time=self.K0*(self.N0*self.N_blocknum)*32/self.bandwidthB
                 self.readB_time_queue.append(ceil(readB_time)+2)
     
-    def conflict_avoid(row_len):            
+    def conflict_avoid(self,row_len):            
         latency=4   #9         #需要的延时
         color=np.zeros(latency,int)     #相当于涂色问题了
         for i in range(len(row_len)):
@@ -126,7 +126,7 @@ class DySpMM(object):
         self.ideal_comp_time_queue=[]
         self.balance_comp_time_queue=[]
         self.unbalance_comp_time_queue=[]
-        if self.row>1000000:    #为了降低测试整体时间
+        if self.A_row>1000000:    #为了降低测试整体时间
             conflict_flag=0
         else:
             conflict_flag=1
@@ -261,7 +261,7 @@ def timeline_file_write(file_ptr,readA_timeline,readB_timeline,comp_timeline,WB_
     file_ptr.write('\n')
     return
 
-for i in range(len(dataset_all_path)):       #  len(dataset_all_path)
+for i in range(15,16):       #  len(dataset_all_path)
     dataset_name=(dataset_all_path[i].split('/'))[-1]
     adata=sc.read(dataset_all_path[i])
     data=adata.X
@@ -285,11 +285,11 @@ for i in range(len(dataset_all_path)):       #  len(dataset_all_path)
         DySpMM_file.write(str(Acc.total_WBtime)+','+str(Acc.ideal_perf)+','+str(Acc.balance_perf)+','+str(Acc.unbalance_perf)+',')
 
         DySpMM_balance_timeline_file.write(dataset_name+',N='+str(B_col)+'\n')
-        timeline_file_write(DySpMM_balance_timeline_file,Acc.balance_readA_timeline,Acc.balance_readB_timeline,Acc.balance_comp_timeline,Acc.balance_WB_timeline)
+        timeline_file_write(DySpMM_balance_timeline_file,Acc.balance_readA_timeline[0:Acc.row_round*Acc.col_round],Acc.balance_readB_timeline[0:Acc.row_round*Acc.col_round],Acc.balance_comp_timeline[0:Acc.row_round*Acc.col_round],Acc.balance_WB_timeline[0:Acc.row_round])
         DySpMM_unbalance_timeline_file.write(dataset_name+',N='+str(B_col)+'\n')
-        timeline_file_write(DySpMM_unbalance_timeline_file,Acc.unbalance_readA_timeline,Acc.unbalance_readB_timeline,Acc.unbalance_comp_timeline,Acc.unbalance_WB_timeline)
+        timeline_file_write(DySpMM_unbalance_timeline_file,Acc.unbalance_readA_timeline[0:Acc.row_round*Acc.col_round],Acc.unbalance_readB_timeline[0:Acc.row_round*Acc.col_round],Acc.unbalance_comp_timeline[0:Acc.row_round*Acc.col_round],Acc.unbalance_WB_timeline[0:Acc.row_round])
         DySpMM_ideal_timeline_file.write(dataset_name+',N='+str(B_col)+'\n')
-        timeline_file_write(DySpMM_ideal_timeline_file,Acc.ideal_readA_timeline,Acc.ideal_readB_timeline,Acc.ideal_comp_timeline,Acc.ideal_WB_timeline)
+        timeline_file_write(DySpMM_ideal_timeline_file,Acc.ideal_readA_timeline[0:Acc.row_round*Acc.col_round],Acc.ideal_readB_timeline[0:Acc.row_round*Acc.col_round],Acc.ideal_comp_timeline[0:Acc.row_round*Acc.col_round],Acc.ideal_WB_timeline[0:Acc.row_round])
         print(dataset_name+str(B_col))
 
     DySpMM_file.write('\n')
