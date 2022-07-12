@@ -4,4 +4,9 @@ sextans_simulator.py 作为baseline的性能仿真器
 
 DySpMM_simulator.py 为DySpMM的性能仿真器，主要分析动态矩阵分块和负载均衡，同时可配置硬件参数
 
+<<<<<<< HEAD
 loadbalance_analyse.py 对负载问题单独考虑，评估均衡方案在各任务子块上的效果
+>>>>>>> 5ab9fa6725000f6ab08b2886ae73a602b6041039
+=======
+loadbalance_analyse.py 对负载问题单独考虑，评估均衡方案在各任务子块上的效果
+>>>>>>> 5ab9fa6725000f6ab08b2886ae73a602b6041039
